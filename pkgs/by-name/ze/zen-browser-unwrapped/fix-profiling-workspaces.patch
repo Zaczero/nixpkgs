@@ -1,0 +1,34 @@
+diff --git a/zen/workspaces/ZenWorkspaces.mjs b/zen/workspaces/ZenWorkspaces.mjs
+index ea881ae..3087e2c 100644
+--- a/zen/workspaces/ZenWorkspaces.mjs
++++ b/zen/workspaces/ZenWorkspaces.mjs
+@@ -414,7 +414,7 @@ var gZenWorkspaces = new (class extends nsZenMultiWindowFeature {
+           const defaultSelectedContainer = this.workspaceElement(
+             this.activeWorkspace
+           )?.querySelector('.zen-workspace-normal-tabs-section');
+-          const pinnedContainer = this.workspaceElement(this.activeWorkspace).querySelector(
++          const pinnedContainer = this.workspaceElement(this.activeWorkspace)?.querySelector(
+             '.zen-workspace-pinned-tabs-section'
+           );
+           // New profile with no workspaces does not have a default selected container
+@@ -829,7 +829,7 @@ var gZenWorkspaces = new (class extends nsZenMultiWindowFeature {
+   }
+
+   get privateWindowOrDisabled() {
+-    return this.isPrivateWindow || !this.shouldHaveWorkspaces;
++    return this.isPrivateWindow || !this.workspaceEnabled;
+   }
+
+   get workspaceEnabled() {
+@@ -918,6 +918,11 @@ var gZenWorkspaces = new (class extends nsZenMultiWindowFeature {
+   }
+
+   async initializeWorkspaces() {
++    if (!this.workspaceEnabled) {
++      this._resolveSectionsInitialized();
++      this._resolveInitialized();
++      return;
++    }
+     let activeWorkspace = await this.getActiveWorkspace();
+     this.activeWorkspace = activeWorkspace?.uuid;
+     await gZenSessionStore.promiseInitialized;
