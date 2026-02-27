@@ -1,0 +1,23 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 245798c..d70f88d 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -107,6 +107,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "hex2d-dpcext"
++source = "git+https://github.com/dpc/hex2d-dpcext-rs?rev=5003e437d5e370d0219dca5638e0fd72716ee9d2#5003e437d5e370d0219dca5638e0fd72716ee9d2"
+ version = "0.1.1"
+ dependencies = [
+  "hex2d",
+diff --git a/Cargo.toml b/Cargo.toml
+index c48c232..ed39048 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -22,7 +22,7 @@ fnv = "1.0.2"
+ hex2d = "1.1.0"
+-hex2d-dpcext = { git = "https://github.com/dpc/hex2d-dpcext-rs" }
++hex2d-dpcext = { git = "https://github.com/dpc/hex2d-dpcext-rs", rev = "5003e437d5e370d0219dca5638e0fd72716ee9d2" }
+ log = "0.3.5"
+ fern = "0.3.5"
+ ncurses = { version = "5.86.0", features = ["wide"] }

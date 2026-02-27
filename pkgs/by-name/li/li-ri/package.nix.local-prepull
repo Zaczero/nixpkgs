@@ -1,0 +1,64 @@
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  pkg-config,
+  SDL2,
+  SDL2_mixer,
+  simpleini,
+  nix-update-script,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
+  pname = "li-ri";
+  version = "3.1.6";
+
+  src = fetchFromGitHub {
+    owner = "petitlapin";
+    repo = "Li-Ri";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-Dw4r0tRUBNQfJzKZI9R51ansRyg9rztBOXjcvjSgJic=";
+  };
+
+  strictDeps = true;
+
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+  ];
+
+  buildInputs = [
+    SDL2
+    SDL2_mixer
+    simpleini
+  ];
+
+  cmakeFlags = [
+    (lib.cmakeBool "USE_SYSTEM_SIMPLEINI" true)
+  ];
+
+  # Fully interactive SDL game with no non-interactive CLI flags.
+  postInstall = ''
+    install -Dm644 \
+      "$src/AUTHORS" \
+      "$src/COPYING" \
+      "$src/COPYING.Music" \
+      "$src/INSTALL" \
+      "$src/NEWS.yaml" \
+      "$src/README.md" \
+      -t "$out/share/doc/${finalAttrs.pname}"
+  '';
+
+  passthru.updateScript = nix-update-script { };
+
+  meta = {
+    description = "Arcade game where you drive a toy wood engine and collect coaches";
+    homepage = "https://github.com/petitlapin/Li-Ri";
+    license = lib.licenses.gpl3Plus;
+    maintainers = with lib.maintainers; [ Zaczero ];
+    mainProgram = "Li-ri";
+    sourceProvenance = with lib.sourceTypes; [ fromSource ];
+    platforms = lib.platforms.unix;
+  };
+})
